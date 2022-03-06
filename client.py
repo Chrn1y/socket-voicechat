@@ -3,6 +3,7 @@
 import socket
 import threading
 import pyaudio
+import keyboard
 
 
 class Client:
@@ -43,8 +44,9 @@ class Client:
     def receive_server_data(self):
         while True:
             try:
-                data = self.s.recv(1024)
-                self.playing_stream.write(data)
+                if keyboard.is_pressed('z'):
+                    data = self.s.recv(1024)
+                    self.playing_stream.write(data)
             except:
                 pass
 
