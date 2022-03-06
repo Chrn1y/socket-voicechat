@@ -9,7 +9,6 @@ class Server:
         self.ip = socket.gethostbyname(socket.gethostname())
         while 1:
             try:
-                # self.port = int(input('Enter port number to run on --> '))
                 self.port = 8080
                 self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.s.bind((self.ip, self.port))
@@ -19,6 +18,7 @@ class Server:
                 print("Couldn't bind to that port")
 
         self.connections = []
+        self.users = set()
         self.accept_connections()
 
     def accept_connections(self):
@@ -43,13 +43,25 @@ class Server:
                     pass
 
     def handle_client(self, c, addr):
+        try:
+            name = c.recv(1024)
+            name = name.decode("utf-8")
+            self.users.add(name)
+            print("current users:", self.users)
+        except:
+            print("error occured")
+            c.close()
+            return
         while 1:
             try:
                 data = c.recv(1024)
                 self.broadcast(c, data)
-
+                print(name, "is talking")
             except socket.error:
+                self.users.remove(name)
+                print("current users:", self.users)
                 c.close()
+                return
 
 
 server = Server()
