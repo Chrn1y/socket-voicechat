@@ -12,7 +12,9 @@ class Client:
         while 1:
             try:
                 self.target_ip = input('Enter IP address of server --> ')
-                self.target_port = int(input('Enter target port of server --> '))
+                # self.target_port = int(input('Enter target port of server --> '))
+                # self.target_ip = socket.gethostbyname(socket.gethostname())
+                self.target_port = 8080
 
                 self.s.connect((self.target_ip, self.target_port))
 
